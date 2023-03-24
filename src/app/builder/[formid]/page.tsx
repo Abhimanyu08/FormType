@@ -7,23 +7,20 @@ import QuestionSelector from "./components/QuestionSelector";
 import { AiFillCaretUp, AiFillCaretDown } from "react-icons/ai";
 
 function Builder() {
-	const [showId, setShowId] = useState(1);
 	const { formState, dispatch } = useContext(FormContext);
-	useEffect(() => {
-		setShowId(formState.questions.length);
-	}, [formState.questions]);
+
 	return (
 		<>
 			<div className="relative overflow-hidden w-[1000px] aspect-[16/9] border-[1px] border-white">
 				{formState.questions.map((q, i) => {
-					return <Question key={q.id} question={q} showId={showId} />;
+					return <Question key={q.id} question={q} />;
 				})}
 				<div className="flex absolute bottom-2 right-10 divide-x-[1px] divide-black">
 					<button
 						onClick={() =>
-							setShowId((prev) => {
-								if (prev !== 1) return prev - 1;
-								return prev;
+							dispatch({
+								type: "show question",
+								payload: formState.questionOnShow - 1,
 							})
 						}
 						className="bg-blue-500 text-white p-2 rounded-l-md"
@@ -32,10 +29,9 @@ function Builder() {
 					</button>
 					<button
 						onClick={() =>
-							setShowId((prev) => {
-								if (prev !== formState.questions.length)
-									return prev + 1;
-								return prev;
+							dispatch({
+								type: "show question",
+								payload: formState.questionOnShow + 1,
 							})
 						}
 						className="bg-blue-500 text-white p-2 rounded-r-md"

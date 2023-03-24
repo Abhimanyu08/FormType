@@ -4,21 +4,18 @@ import { QuestionType, ResponseType } from "../QuestionInterface";
 import QuestionInput from "./QuestionInput";
 import QuestionResponse from "./QuestionResponse";
 
-function Question({
-	question,
-	showId,
-}: {
-	question: QuestionType;
-	showId: number;
-}) {
+function Question({ question }: { question: QuestionType }) {
+	const { formState } = useContext(FormContext);
 	return (
 		<div
 			className={`w-full h-full flex flex-col justify-center items-center transition-transform`}
 			style={{
-				transform: `translateY(-${(showId - 1) * 100}%)`,
+				transform: `translateY(-${
+					(formState.questionOnShow - 1) * 100
+				}%)`,
 			}}
 		>
-			<div className="w-[700px] text-xl font-mono flex flex-col gap-4">
+			<div className="w-[700px]  flex flex-col gap-4">
 				<QuestionInput question={question} />
 				{question.description && <p>{question.description}</p>}
 				<QuestionResponse question={question} />

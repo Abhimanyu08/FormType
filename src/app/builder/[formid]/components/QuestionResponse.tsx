@@ -12,11 +12,15 @@ function QuestionResponse({ question }: { question: QuestionType }) {
 		) as HTMLInputElement;
 
 		dispatch({
-			type: "add question",
+			type: "add response",
 			payload: {
 				questionId: question.id,
 				content: inputEl.value,
 			} as ResponseType,
+		});
+		dispatch({
+			type: "show question",
+			payload: question.id + 1,
 		});
 	};
 	return (

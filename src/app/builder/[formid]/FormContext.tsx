@@ -51,6 +51,7 @@ const reducer: Reducer<FormStateInterface, DispatchObj> = (state, action) => {
 						id: state.questions.length + 1,
 					},
 				],
+				questionOnShow: state.questions.length + 1,
 			};
 		}
 		case "add response": {
@@ -70,6 +71,12 @@ const reducer: Reducer<FormStateInterface, DispatchObj> = (state, action) => {
 			};
 		}
 		case "show question": {
+			const newQuestionToShow = action.payload as number;
+			if (
+				newQuestionToShow == 0 ||
+				newQuestionToShow === state.questions.length + 1
+			)
+				return state;
 			return {
 				...state,
 				questionOnShow: action.payload as number,
