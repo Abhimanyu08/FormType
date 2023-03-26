@@ -1,36 +1,35 @@
 "use client";
-import React, { useContext } from "react";
+import { useContext } from "react";
 import { FormContext } from "../FormContext";
-import { QuestionType } from "../QuestionInterface";
+import { QuestionOptions } from "../QuestionInterface";
 
-function QuestionSelector() {
+function QuestionAdder() {
 	const { dispatch } = useContext(FormContext);
 
 	return (
-		<div>
-			Add a questiong with respone type{" "}
-			<select
-				className="bg-transparent text-white"
-				onChange={(e) => {
-					const type = e.target.value;
+		<select
+			className="bg-blue-500 rounded-sm p-2 text-sm text-black text-center w-full"
+			onChange={(e) => {
+				const type = e.target.value;
+				if (type) {
 					dispatch({
 						type: "add question",
-						payload: {
-							id: 0,
-							type,
-							content:
-								"Press / to refer to previous question responses",
-						} as QuestionType,
+						payload: type as typeof QuestionOptions[number],
 					});
-				}}
-			>
-				<option value="none">None</option>
-				<option value="text">text</option>
-				<option value="email">email</option>
-				<option value="phone">phone number</option>
-			</select>{" "}
-		</div>
+				}
+				e.target.value = "";
+			}}
+		>
+			<option value="">Add question</option>
+			{QuestionOptions.map((type) => {
+				return (
+					<option value={type} key={type}>
+						{type}
+					</option>
+				);
+			})}
+		</select>
 	);
 }
 
-export default QuestionSelector;
+export default QuestionAdder;

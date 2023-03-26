@@ -7,10 +7,14 @@ import {
 	Dispatch,
 	Reducer,
 } from "react";
-import { QuestionType, ResponseType } from "./QuestionInterface";
+import {
+	QuestionOptions,
+	QuestionType,
+	ResponseType,
+} from "./QuestionInterface";
 
 export interface FormStateInterface {
-	questions: QuestionType[];
+	questions: Partial<QuestionType>[];
 	responses: ResponseType[];
 	previewing: boolean;
 	questionOnShow: number;
@@ -23,7 +27,9 @@ interface DispatchObj {
 		| "modify question"
 		| "show question"
 		| "toggle preview";
-	payload?: QuestionType | ResponseType | number;
+	payload?: Partial<
+		QuestionType | ResponseType | number | typeof QuestionOptions[number]
+	>;
 }
 
 export const FormContext = createContext<{
@@ -47,8 +53,12 @@ const reducer: Reducer<FormStateInterface, DispatchObj> = (state, action) => {
 				questions: [
 					...state.questions,
 					{
-						...(action.payload as QuestionType),
 						id: state.questions.length + 1,
+						type: action.payload as typeof QuestionOptions[number],
+						content:
+							"Enter questions. Press / to refer to previous responses",
+						description: "Enter description. (Optional)",
+						required: false,
 					},
 				],
 				questionOnShow: state.questions.length + 1,

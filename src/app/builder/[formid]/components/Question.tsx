@@ -4,22 +4,19 @@ import { QuestionType, ResponseType } from "../QuestionInterface";
 import QuestionInput from "./QuestionInput";
 import QuestionResponse from "./QuestionResponse";
 
-function Question({ question }: { question: QuestionType }) {
+function Question({ question }: { question: Partial<QuestionType> }) {
 	const { formState } = useContext(FormContext);
 	return (
 		<div
-			className={`w-full h-full flex flex-col justify-center items-center transition-transform`}
+			className={`w-full px-20 gap-4  rounded-md aspect-video  bg-black flex flex-col justify-center items-center transition-transform`}
 			style={{
 				transform: `translateY(-${
 					(formState.questionOnShow - 1) * 100
 				}%)`,
 			}}
 		>
-			<div className="w-[700px]  flex flex-col gap-4">
-				<QuestionInput question={question} />
-				{question.description && <p>{question.description}</p>}
-				<QuestionResponse question={question} />
-			</div>
+			<QuestionInput question={question} />
+			<QuestionResponse question={question} />
 		</div>
 	);
 }

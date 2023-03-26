@@ -3,18 +3,23 @@
 import React, { useContext, useEffect, useState } from "react";
 import { FormContext } from "./FormContext";
 import Question from "./components/Question";
-import QuestionSelector from "./components/QuestionSelector";
+import QuestionAdder from "./components/QuestionSelector";
 import { AiFillCaretUp, AiFillCaretDown } from "react-icons/ai";
+import FormStateViewer from "./components/FormStateViewer";
+import QuestionEditor from "./components/QuestionEditor";
 
 function Builder() {
 	const { formState, dispatch } = useContext(FormContext);
 
 	return (
 		<>
-			<div className="relative overflow-hidden w-[1000px] aspect-[16/9] border-[1px] border-white">
-				{formState.questions.map((q, i) => {
-					return <Question key={q.id} question={q} />;
-				})}
+			<FormStateViewer />
+			<div className="flex items-center relative bg-gray-600  h-full basis-8/12  border-[1px] border-black">
+				<div className="mx-4 overflow-hidden basis-full aspect-video bg-black rounded-md">
+					{formState.questions.map((q) => {
+						return <Question key={q.id} question={q} />;
+					})}
+				</div>
 				<div className="flex absolute bottom-2 right-10 divide-x-[1px] divide-black">
 					<button
 						onClick={() =>
@@ -40,11 +45,8 @@ function Builder() {
 					</button>
 				</div>
 			</div>
-			<div className="flex gap-4">
-				<QuestionSelector />
-				<button onClick={() => dispatch({ type: "toggle preview" })}>
-					{formState.previewing ? "Edit" : "Preview"}
-				</button>
+			<div className="basis-2/12 h-full">
+				<QuestionEditor />
 			</div>
 		</>
 	);

@@ -2,12 +2,13 @@ import React, { useContext, useEffect, useRef, useState } from "react";
 import { FormContext } from "../FormContext";
 import { QuestionType, ResponseType } from "../QuestionInterface";
 
-function QuestionInput({ question }: { question: QuestionType }) {
+function QuestionInput({ question }: { question: Partial<QuestionType> }) {
 	const { formState, dispatch } = useContext(FormContext);
 
 	const [showQuestions, setShowQuestions] = useState(false);
 
 	const questionInputRef = useRef<HTMLInputElement | null>(null);
+	const descriptionInputRef = useRef<HTMLInputElement | null>(null);
 
 	const handleSlash: React.KeyboardEventHandler<HTMLInputElement> = (e) => {
 		if (e.key === "/") {
@@ -23,6 +24,8 @@ function QuestionInput({ question }: { question: QuestionType }) {
 			payload: {
 				...question,
 				content: (questionInputRef.current as HTMLInputElement).value,
+				description: (descriptionInputRef.current as HTMLInputElement)
+					.value,
 			},
 		});
 	}, [formState.previewing, formState.questionOnShow]);
@@ -51,49 +54,59 @@ function QuestionInput({ question }: { question: QuestionType }) {
 	}, [formState.questionOnShow]);
 
 	return (
-		<div className="w-full flex items-center gap-2 relative">
-			{" "}
-			<span className="text-sm">{question.id}→ </span>
+		<>
+			<div className="w-full flex items-center gap-2 relative">
+				{" "}
+				<span className="text-sm">{question.id}→ </span>
+				<input
+					id={`question-${question.id}`}
+					ref={questionInputRef}
+					type="text"
+					placeholder={
+						"Press / to refer to responses of previous questions"
+					}
+					className="bg-transparent text-lg focus:outline-none basis-full break-words"
+					onKeyDown={handleSlash}
+					disabled={formState.previewing}
+				/>
+				<select
+					id="question-referrer"
+					className={`flex flex-col w-44 text-xs bg-blue-500 text-white font-semibold border-2 rounded-md absolute right-0 divide-y-2 ${
+						showQuestions ? "" : "invisible"
+					}`}
+					onChange={(e) => {
+						setShowQuestions(false);
+						const inputEl =
+							questionInputRef.current as HTMLInputElement;
+						inputEl.value += e.target.value;
+						inputEl.focus();
+					}}
+				>
+					<option value="None">Select a question</option>
+					{formState.questions.map((q) => {
+						if ((q.id || 0) < question.id!) {
+							return (
+								<option
+									key={q.id}
+									value={q.id}
+									className="truncate break-words px-2 py-2 hover:bg-cyan-400 hover:text-black"
+								>
+									{q.content}
+								</option>
+							);
+						}
+					})}
+				</select>
+			</div>
 			<input
-				id={`question-${question.id}`}
-				ref={questionInputRef}
+				id={`description-${question.id}`}
 				type="text"
-				placeholder={
-					"Press / to refer to responses of previous questions"
-				}
-				className="bg-transparent text-lg focus:outline-none basis-full break-words"
-				onKeyDown={handleSlash}
+				placeholder={"Enter description (Optional)"}
+				ref={descriptionInputRef}
+				className="bg-transparent text-lg w-full focus:outline-none  break-words"
 				disabled={formState.previewing}
 			/>
-			<select
-				id="question-referrer"
-				className={`flex flex-col w-44 text-xs  bg-blue-500 text-white font-semibold border-2  rounded-md absolute right-0 divide-y-2 ${
-					showQuestions ? "" : "invisible"
-				}`}
-				onChange={(e) => {
-					setShowQuestions(false);
-					const inputEl =
-						questionInputRef.current as HTMLInputElement;
-					inputEl.value += e.target.value;
-					inputEl.focus();
-				}}
-			>
-				<option value="None">Select a question</option>
-				{formState.questions.map((q) => {
-					if (q.id < question.id) {
-						return (
-							<option
-								value={q.id}
-								className="truncate break-words px-2 py-2 hover:bg-cyan-400 hover:text-black"
-							>
-								<span>{q.id}.</span>
-								{q.content}
-							</option>
-						);
-					}
-				})}
-			</select>
-		</div>
+		</>
 	);
 }
 
