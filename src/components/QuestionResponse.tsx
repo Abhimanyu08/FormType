@@ -59,6 +59,16 @@ function QuestionResponse({
 				}
 			}
 		}
+		if (question.type === "email") {
+			if (!(response as string).includes("@")) {
+				setError("Email invalid");
+				return;
+			}
+			if ((response as string).split("@").at(0)?.includes("+")) {
+				setError("Task specific emails not allowed");
+				return;
+			}
+		}
 
 		dispatch({
 			type: "next",
@@ -71,7 +81,7 @@ function QuestionResponse({
 		}
 	};
 	return (
-		<div className="w-full flex flex-col gap-3">
+		<div className="w-full flex flex-col gap-3 ">
 			<QuestionTypeToResponse
 				id={id}
 				question={question}
@@ -267,6 +277,9 @@ function ChoiceResponse({
 			if (previous.length == (numChoices || 1) - 1) {
 				const resp = [...previous, selection];
 				handleSubmit(resp);
+			}
+			if (numChoices === 1 && previous.length === 1) {
+				return [selection];
 			}
 			if (previous.length < (numChoices || 1)) {
 				const set = new Set([...previous, selection]);

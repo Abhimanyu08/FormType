@@ -30,7 +30,7 @@ export function QuestionPreview({
 				<div className="flex flex-col w-full gap-2">
 					<p className="w-full text-2xl break-words relative">
 						<span className="absolute -left-8 top-1 text-base">
-							{id}➔
+							{id + 1}➔
 						</span>
 						{modifyQuestion(question?.content || "", responses)}
 						{question.required && "*"}
