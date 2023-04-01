@@ -35,10 +35,6 @@ function SlideShow() {
 				if (e.key === "ArrowUp") {
 					dispatch({ type: "prev" });
 				}
-				if (e.key === "ArrowDown") {
-					console.log("down");
-					dispatch({ type: "next" });
-				}
 			}}
 		>
 			<div className="fixed top-0 left-0 w-full h-1 bg-blue-500/30">

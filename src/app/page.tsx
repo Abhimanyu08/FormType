@@ -1,4 +1,3 @@
-import EndScreen from "@/components/EndScreen";
 import ViewForm from "@/components/ViewForm";
 import Link from "next/link";
 export default function Home() {
