@@ -23,8 +23,8 @@ function SlideShow() {
 
 	useEffect(() => {
 		setProgress(
-			Object.keys(formState.responses).length /
-				Object.keys(formState.questions).length
+			formState.questionOnShow /
+				(Object.keys(formState.questions).length - 1)
 		);
 	}, [formState.responses]);
 

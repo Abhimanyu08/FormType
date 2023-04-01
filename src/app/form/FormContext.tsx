@@ -141,6 +141,13 @@ const reducer: Reducer<FormStateInterface, DispatchObj> = (state, action) => {
 			if (eval(evalString)) {
 				return {
 					...state,
+					questions: {
+						...state.questions,
+						[destination]: {
+							...state.questions[destination],
+							prev: currQuestionId,
+						},
+					},
 					responses: currentResponses,
 					questionOnShow: destination,
 				};

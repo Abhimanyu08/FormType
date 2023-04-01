@@ -13,13 +13,16 @@ async function View({ params }: { params: NextParsedUrlQuery }) {
 	const { data: responseData } = await supabase
 		.from(SUPABASE_RESPONSE_TABLE)
 		.select<"*", ResponseTable>("*")
-		.eq("form", params.formId);
+		.eq("form", parseInt(params.formId as string))
+		.limit(10);
 
-	const { data: questionData } = await await supabase
+	const { data: questionData } = await supabase
 		.from(SUPABASE_FORM_TABLE)
 		.select<"*", QuestionTable>("*")
 		.eq("id", params.formId)
 		.single();
+
+	console.log(responseData);
 
 	const questionToAnswers: { [key: string]: AnswerType[] } = {};
 	const rowLength = responseData?.length || 1;
@@ -39,7 +42,8 @@ async function View({ params }: { params: NextParsedUrlQuery }) {
 		<div className="flex flex-col items-center justify-center w-screen h-screen">
 			<table className="table-auto border-spacing-5">
 				<caption className="caption-top">
-					Response Data for formId: {params.formId}
+					Response Data for formId: {params.formId}. This page
+					revalidates every 60 seconds
 				</caption>
 				<thead>
 					<tr>
@@ -83,3 +87,4 @@ async function View({ params }: { params: NextParsedUrlQuery }) {
 }
 
 export default View;
+export const revalidate = 60;
