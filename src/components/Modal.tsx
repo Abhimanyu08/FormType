@@ -1,24 +1,25 @@
 "use client";
-import { FormContext } from "@/app/builder/[formid]/FormContext";
+import { FormContext } from "@/app/builder/FormContext";
 import {
-	ChoiceQuestion,
 	QuestionType,
 	SelectQuestion,
-} from "@/app/builder/[formid]/QuestionInterface";
+	ChoiceQuestion,
+} from "@/types/QuestionInterface";
+
 import { useContext, useEffect, useState } from "react";
 
 function Modal() {
 	const [show, setShow] = useState(false);
 	const { formState, dispatch } = useContext(FormContext);
 	const [optionsString, setOptionsString] = useState("");
-	const [question, setQuestion] = useState<Partial<QuestionType>>();
+	const [question, setQuestion] = useState<Partial<QuestionType[number]>>();
 
 	useEffect(() => {
-		console.log("modal's useEffect called");
 		const { questionOnShow, questions } = formState;
-		const question = questions.at(questionOnShow - 1);
+		const question = questions[questionOnShow];
 		const defaultOptions =
-			(question as SelectQuestion | ChoiceQuestion)?.options || [];
+			(question as SelectQuestion[number] | ChoiceQuestion[number])
+				?.options || [];
 
 		setQuestion(question);
 
@@ -31,9 +32,11 @@ function Modal() {
 		dispatch({
 			type: "modify question",
 			payload: {
-				...question,
-				options,
-			} as SelectQuestion | ChoiceQuestion,
+				[formState.questionOnShow]: {
+					...question,
+					options,
+				},
+			} as QuestionType,
 		});
 	};
 

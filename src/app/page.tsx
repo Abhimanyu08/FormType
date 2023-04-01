@@ -1,14 +1,20 @@
+import EndScreen from "@/components/EndScreen";
+import ViewForm from "@/components/ViewForm";
 import Link from "next/link";
-
 export default function Home() {
 	return (
-		<main className="h-screen w-screen flex items-center justify-center">
+		<main className="h-screen w-screen flex items-center justify-center gap-4">
 			<Link
-				href={"/builder/123"}
-				className="rounded-md border-[1px] border-black p-2"
+				href={"/builder"}
+				className="bg-brand hover:bg-blue-500 text-white w-fit px-5 py-[6px] rounded-sm
+					leading-6
+					font-bold
+"
 			>
 				Build Form
 			</Link>
+			<span>Or</span>
+			<ViewForm />
 		</main>
 	);
 }

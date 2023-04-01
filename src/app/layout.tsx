@@ -1,4 +1,12 @@
 import "./globals.css";
+import { Questrial } from "next/font/google";
+
+const questrial = Questrial({
+	variable: "--font-questrial",
+	display: "swap",
+	weight: "400",
+	subsets: ["latin"],
+});
 
 export const metadata = {
 	title: "Create Next App",
@@ -12,7 +20,15 @@ export default function RootLayout({
 }) {
 	return (
 		<html lang="en">
-			<body className="bg-black text-white">{children}</body>
+			<body
+				className={`bg-black text-white
+			
+				${questrial.variable}
+				font-sans
+			`}
+			>
+				{children}
+			</body>
 		</html>
 	);
 }

@@ -1,3 +1,22 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+input,
+select {
+	background: #000;
+}
+
+@keyframes move {
+	0% {
+		left: -80px;
+	}
+
+	100% {
+		left: 160px;
+	}
+}
+
+.loading {
+	animation: move 1s linear infinite;
+}

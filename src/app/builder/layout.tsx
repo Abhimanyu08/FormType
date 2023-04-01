@@ -1,6 +1,7 @@
 import React from "react";
 import { FormContextProvider } from "./FormContext";
 import Modal from "@/components/Modal";
+import FormModal from "@/components/FormModal";
 
 function layout({ children }: { children: React.ReactNode }) {
 	return (

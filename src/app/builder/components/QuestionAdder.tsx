@@ -1,7 +1,10 @@
 "use client";
 import { useContext } from "react";
 import { FormContext } from "../FormContext";
-import { QuestionOptions } from "../QuestionInterface";
+import {
+	QuestionOptions,
+	QuestionType,
+} from "../../../types/QuestionInterface";
 
 function QuestionAdder() {
 	const { dispatch } = useContext(FormContext);
@@ -12,9 +15,16 @@ function QuestionAdder() {
 			onChange={(e) => {
 				const type = e.target.value;
 				if (type) {
+					let payload: Partial<QuestionType[number]> = {
+						type: type as typeof QuestionOptions[number],
+						required: true,
+					};
+					if (type === "choice") {
+						payload = { type, numChoices: 1, required: true };
+					}
 					dispatch({
 						type: "add question",
-						payload: type as typeof QuestionOptions[number],
+						payload,
 					});
 				}
 				e.target.value = "";
