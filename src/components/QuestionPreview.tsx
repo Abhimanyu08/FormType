@@ -26,7 +26,7 @@ export function QuestionPreview({
 				transform: `translateY(-${questionOnShow * 100}%)`,
 			}}
 		>
-			<div className="flex flex-col gap-8 w-1/2 h-full justify-center">
+			<div className="flex flex-col gap-8 w-9/12 md:w-1/2 h-full justify-center">
 				<div className="flex flex-col w-full gap-2">
 					<p className="w-full text-2xl break-words relative">
 						<span className="absolute -left-8 top-1 text-base">

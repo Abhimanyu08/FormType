@@ -5,9 +5,7 @@ import {
 	SUPABASE_RESPONSE_TABLE,
 } from "@/utils/constants";
 import supabase from "@/utils/createSupabaseClient";
-import { table } from "console";
 import { NextParsedUrlQuery } from "next/dist/server/request-meta";
-import React from "react";
 
 async function View({ params }: { params: NextParsedUrlQuery }) {
 	const { data: responseData } = await supabase
@@ -21,8 +19,6 @@ async function View({ params }: { params: NextParsedUrlQuery }) {
 		.select<"*", QuestionTable>("*")
 		.eq("id", params.formId)
 		.single();
-
-	console.log(responseData);
 
 	const questionToAnswers: { [key: string]: AnswerType[] } = {};
 	const rowLength = responseData?.length || 1;
